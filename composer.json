@@ -5,7 +5,8 @@
   "require": {
     "illuminate/database": "5.1.8",
     "filp/whoops": "^2.7",
-    "klein/klein": "^2.1"
+    "klein/klein": "^2.1",
+    "fzaninotto/faker": "^1.9"
   },
   "autoload": {
     "psr-4": {
