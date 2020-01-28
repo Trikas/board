@@ -4,12 +4,13 @@ namespace App\migration;
 
 use App\Helpers\Properties;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Schema\Blueprint;
 
 class Migration
 {
     public function userTableMigrateUp()
     {
-        Capsule::schema()->create(Properties::TABLE_USERS, function ($table) {
+        Capsule::schema()->create(Properties::TABLE_USERS, function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -25,10 +26,11 @@ class Migration
 
     public function csmTableMigrateUp()
     {
-        Capsule::schema()->create(Properties::TABLE_CSM, function ($table) {
+        Capsule::schema()->create(Properties::TABLE_CSM, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->integer('grade')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -39,10 +41,11 @@ class Migration
 
     public function csmbTableMigrateUp()
     {
-        Capsule::schema()->create(Properties::TABLE_CSMB, function ($table) {
+        Capsule::schema()->create(Properties::TABLE_CSMB, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->integer('grade')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -60,15 +63,14 @@ class Migration
 
     public function downMigrate()
     {
-        $this->userTableMigrateDown();
         $this->csmbTableMigrateDown();
         $this->csmTableMigrateDown();
+        $this->userTableMigrateDown();
     }
 
     public function initTables()
     {
         $this->downMigrate();
         $this->upMigrate();
-        echo 'init table successfully<br>';
     }
 }

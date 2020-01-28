@@ -13,4 +13,5 @@ class Csm extends Model
 
     protected $table = 'csm';
     protected $guarded = ['id'];
+    public $timestamps = false;
 }
