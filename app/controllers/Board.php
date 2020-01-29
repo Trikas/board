@@ -31,25 +31,30 @@ class Board
     public function isPassGradeCsm($collectGrades, $user)
     {
         if ($collectGrades->avg() >= self::PASS_NUMBER) {
-            self::updateResultCsmBoard($user, self::CONFIRM_BOARD);
+            self::updateResultBoard($user, self::CONFIRM_BOARD, self::BOARD_RESULT_CSM);
         } else {
-            self::updateResultCsmBoard($user, self::UNCONFIRM_BOARD);
+            self::updateResultBoard($user, self::UNCONFIRM_BOARD, self::BOARD_RESULT_CSM);
         }
     }
 
     public function isPassGradeCsmb($collectGrades, $user)
     {
         if ($collectGrades->count() > 2){
-            $minGrade = $collectGrades->min();
+            $maxGrade = BoardHelper::startCsmbBoard($collectGrades);
+            if($maxGrade){
+                self::updateResultBoard($user, self::CONFIRM_BOARD, self::BOARD_RESULT_CSMB);
+            }else{
+                self::updateResultBoard($user, self::UNCONFIRM_BOARD, self::BOARD_RESULT_CSMB);
+            }
         }else{
-            self::updateResultCsmBoard($user, self::UNCONFIRM_BOARD);
+            self::updateResultBoard($user, self::UNCONFIRM_BOARD, self::BOARD_RESULT_CSMB);
         }
     }
 
-    public static function updateResultCsmBoard($user, $status)
+    public static function updateResultBoard($user, $status, $board)
     {
         BoardHelper::updateUserBoardResult(
-            self::BOARD_RESULT_CSM,
+            $board,
             $status,
             $user
         );

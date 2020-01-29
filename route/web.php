@@ -8,6 +8,7 @@ use \App\models\User;
 use \App\controllers\Board;
 use \App\Helpers\UserHelper;
 use \App\Helpers\BoardHelper;
+use \App\Helpers\XMLSerializer;
 
 
 $klein = new \Klein\Klein();
@@ -26,12 +27,14 @@ $klein->respond('GET', '/csm/[:id]', function ($request, $response, $service) {
     $user = UserHelper::getUser($request->id);
     BoardHelper::bootBoard($user->csm, 'csm', $user);
     $send = $request->param('format', 'json');
-    return $response->$send($user);
+    $response->$send($user);
 });
 
 $klein->respond('GET', '/csmb/[:id]', function ($request, $response, $service) {
     $user = UserHelper::getUser($request->id);
     BoardHelper::bootBoard($user->csmb, 'csmb', $user);
+    $service->xml = XMLSerializer::generateValidXmlFromArray($user->toArray());
+    $service->render(__DIR__ . '/../views/board-csmb.php');
 });
 
 
