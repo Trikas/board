@@ -16,6 +16,8 @@
             <th scope="col">#</th>
             <th scope="col">First name</th>
             <th scope="col">Last name</th>
+            <th scope="col">CSM board result</th>
+            <th scope="col">CSMB board result</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -25,6 +27,8 @@
             <th scope="row"><?=$user->id?></th>
             <td><?=$user->first_name?></td>
             <td><?=$user->last_name?></td>
+            <td><?=$user->csm_result?></td>
+            <td><?=$user->csmb_result?></td>
             <td><a href="/csm/<?=$user->id?>">CSM board</a>&nbsp;<a href="/csmb/<?=$user->id?>">CSMB board</a></td>
         </tr>
         <?endforeach;?>

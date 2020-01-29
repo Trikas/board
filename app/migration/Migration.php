@@ -14,7 +14,7 @@ class Migration
             $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->boolean('scm_result')->nullable();
+            $table->boolean('csm_result')->nullable();
             $table->boolean('csmb_result')->nullable();
         });
     }

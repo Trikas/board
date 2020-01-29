@@ -4,6 +4,8 @@
 namespace App\Helpers;
 
 
+use App\controllers\Board;
+
 class BoardHelper
 {
     public static function selectGrades($grades): array
@@ -14,5 +16,19 @@ class BoardHelper
         }
 
         return $gradesCollect;
+    }
+
+    public static function updateUserBoardResult(string $boardResultName, bool $status, $user)
+    {
+        $user->update([
+            $boardResultName => $status
+        ]);
+    }
+
+    public static function bootBoard($grades, $boardName, $user)
+    {
+        $board = new Board($grades);
+        $collectGrades = $board->getGrades();
+        $boardName == 'csm' ? $board->isPassGradeCsm($collectGrades, $user) : $board->isPassGradeCsmb($collectGrades, $user);
     }
 }

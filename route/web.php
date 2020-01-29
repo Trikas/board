@@ -5,7 +5,9 @@ use \App\migration\Migration;
 use \App\seeders\SeederDb;
 use Illuminate\Database\Capsule\Manager;
 use \App\models\User;
-use \App\controllers\BoardCsm;
+use \App\controllers\Board;
+use \App\Helpers\UserHelper;
+use \App\Helpers\BoardHelper;
 
 
 $klein = new \Klein\Klein();
@@ -17,15 +19,21 @@ $klein->respond('GET', '/init-tables', function () {
 });
 $klein->respond('GET', '/', function ($request, $response, $service) {
     $service->users = User::all();
-    $service->render(__DIR__.'/../views/test.php');
+    $service->render(__DIR__ . '/../views/test.php');
 });
 
-$klein->respond('GET', '/csm/[:id]', function ($request, $response, $service){
-    $user = User::find($request->id);
-    $boardCsm = new \App\controllers\BoardCsm($user->csm);
-    $collectGrades = $boardCsm->getCsmGrades();
-    dd($collectGrades);
+$klein->respond('GET', '/csm/[:id]', function ($request, $response, $service) {
+    $user = UserHelper::getUser($request->id);
+    BoardHelper::bootBoard($user->csm, 'csm', $user);
+    $send = $request->param('format', 'json');
+    return $response->$send($user);
 });
+
+$klein->respond('GET', '/csmb/[:id]', function ($request, $response, $service) {
+    $user = UserHelper::getUser($request->id);
+    BoardHelper::bootBoard($user->csmb, 'csmb', $user);
+});
+
 
 $klein->dispatch();
 
