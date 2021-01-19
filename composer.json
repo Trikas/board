@@ -3,7 +3,7 @@
   "description": "test project",
   "type": "project",
   "require": {
-    "illuminate/database": "5.1.8",
+    "illuminate/database": "6.20.12",
     "filp/whoops": "^2.7",
     "klein/klein": "^2.1",
     "fzaninotto/faker": "^1.9"
